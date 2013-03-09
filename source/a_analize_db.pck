@@ -1,7 +1,12 @@
 create or replace package a_analize_db as
   /*=========================================================================*/
+  procedure about_db;
+  /*=========================================================================*/
   -- Find the db links
   procedure get_db_links;
+  /*=========================================================================*/
+  -- Get Oracle product version
+  procedure get_product_version;
   /*=========================================================================*/
 end a_analize_db;
 /
@@ -9,6 +14,12 @@ create or replace package body a_analize_db as
   /*=========================================================================*/
   gc_line1 constant varchar2(80) := '========================================';
   gc_line2 constant varchar2(80) := '----------------------------------------';
+  /*=========================================================================*/
+  procedure about_db as
+  begin
+    get_product_version;
+    get_db_links;
+  end about_db;
   /*=========================================================================*/
   -- Find the db links
   procedure get_db_links as
@@ -53,5 +64,18 @@ create or replace package body a_analize_db as
   
   end get_db_links;
   /*=========================================================================*/
+  -- Get Oracle product version
+  procedure get_product_version as
+  begin
+    put(gc_line1);
+    put('Get Oracle product version');
+    put(gc_line2);
+    for i in (select * from v$version) loop
+      put('banner = [' || i.banner || ']');
+    end loop;
+    put(gc_line1);
+  end get_product_version;
+  /*=========================================================================*/
+
 end a_analize_db;
 /
